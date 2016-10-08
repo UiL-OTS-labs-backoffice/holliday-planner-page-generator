@@ -1,4 +1,4 @@
-#!/bin/python 
+#!/usr/bin/env python 
 # Use python 2.x
 import re, datetime, sys
 
