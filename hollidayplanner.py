@@ -3,7 +3,7 @@
 import re, datetime, sys
 
 class holliday_planner(object):
-	
+
 	def __init__(self, year, names):
 		'''
 		Generate a calendar for this year
@@ -12,6 +12,24 @@ class holliday_planner(object):
 		self.COLORS = ['green', 'red', 'purple', 'magenta', 'orange', 'blue', 'cyan', 'violet', 'yellow', 'wheat']
 		self.DAYS = ["Monday", "Tuesday", "Wednesday" , "Thursday", "Friday", "Saterday", "Sunday"]
 		self.MONTHS = ["January", "February", "March", "April", "May", "June", "July" , "August", "September", "Oktober", "November", "December"]
+		self.header = [
+			'[[Category:HolidayRoster]]', 
+			'', 
+			'You can find how to correctly edit this page on in [[:Category:HolidayRoster | the category page]].', 
+			'==Holidays=='
+		]
+		self.namesHeader = [
+			'',
+			'==How to add to the table==',
+			'To add your own name, just find the correct cell.',
+			'Add your own name, with a nice color by by using HTML.',
+			'<syntaxhighlight lang="html4strict">',
+			'<br/> <font color="<yourColor>"> <yourname> </font>',
+			'</syntaxhighlight>',
+			'',
+			'==List of names and colors==',
+			'The following is a list of all names that have been used already'
+		]
 		self.names = names
 		self.DELTA = datetime.timedelta(1)
 		self.SKIP_WEEKEND = datetime.timedelta(2)
@@ -64,16 +82,24 @@ class holliday_planner(object):
 
 	def createPlanner(self):
 		'''writes the calendar'''
-		stream = open("calendar.txt", 'w')
+		with open("calendar.txt", 'w') as stream:
+			for h in self.header:
+				stream.write(h)
+				stream.write("\n")
+			self.writeCalendarTable(stream)
+			for nh in self.namesHeader:
+				stream.write(nh + "\n")
+			self.writeNamesTable(stream)
+
+	def writeCalendarTable(self, stream):
 		for r in self.generateCalendar():
 			stream.write(r)
 
+	def writeNamesTable(self, stream):
 		stream.write('\n\n\n{| class="wikitable"\n|-\n! Name !! Color !! HTML Line\n|-\n')
 		for k in self.colorNames.keys():
 			stream.write('|<font color=' + self.colorNames[k] + '>' + k + '</font> || ' + self.colorNames[k] + '|| <syntaxhighlight lang="html4strict"><br /><font color=' + self.colorNames[k] + '>' + k + '</font></syntaxhighlight>\n|-\n')
 		stream.write("|}")
-
-		stream.close()
 
 if __name__ == '__main__':
 	assert len(sys.argv) > 1
@@ -90,3 +116,7 @@ if __name__ == '__main__':
 	# cal.addNameLong("Jan de Mooij", datetime.date(year, 7, 27), datetime.date(year, 8, 4))
 
 	cal.createPlanner()
+	with open('rawcalendar.txt', 'w') as stream: 
+		cal.writeCalendarTable(stream)
+	with open('names.txt', 'w') as stream:
+		cal.writeNamesTable(stream)
