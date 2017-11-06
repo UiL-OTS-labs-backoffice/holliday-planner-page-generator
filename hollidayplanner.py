@@ -104,7 +104,7 @@ class holliday_planner(object):
 if __name__ == '__main__':
 	assert len(sys.argv) > 1
 	year = int(sys.argv[1])
-	names = sys.argv[2:] if len(sys.argv) > 2 else ["Maarten Duijndam", "Chris van Run", "Iris Mulders", "Maartje de Klerk", "Martijn van der Klis", "Jan de Mooij"]
+	names = sys.argv[2:] if len(sys.argv) > 2 else ["Maarten Duijndam", "Chris van Run", "Iris Mulders", "Maartje de Klerk", "Ty Mees"]
 	
 	cal = holliday_planner(year, names)
 
