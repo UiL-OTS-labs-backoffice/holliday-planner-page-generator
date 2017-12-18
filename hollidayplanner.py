@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
-import re, datetime, sys
+import datetime, sys
 import argparse
 
 class holliday_planner(object):
 
     COLORS = ['green', 'red', 'purple', 'magenta', 'orange', 'blue', 'cyan',
               'violet', 'yellow', 'wheat']
-    DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday",
-            "Sunday"]
+    DAYS   = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday",
+              "Sunday"]
     MONTHS = ["January", "February", "March", "April", "May", "June",
               "July" , "August", "September", "October",
               "November", "December"]
@@ -110,15 +110,15 @@ class holliday_planner(object):
         stream.write("|}")
 
 
-DESCRIPTION = ('holidayplanner is a utility to write the html neccessary to '
-               'update the holiday schedule for one year. The user is expected '
-               'to provide the names necessary to put in the page. It is also '
-               'recommended to use the --year or -y option to generate the'
-               'list for the intended year, otherwise the current year + 1'
-               'is chosen.')
+DESCRIPTION = ('holidayplanner is a utility to write the wikitable necessary '
+               'to update the holiday schedule for one year. The user is '
+               'expected to provide the names necessary to put in the page.'
+               'It is also recommended to use the --year or -y option to '
+               'generate the list for the intended year, otherwise the current '
+               'year + 1 is chosen.')
 ARGPARSER = argparse.ArgumentParser(description=DESCRIPTION)
 ARGPARSER.add_argument("names",
-                        help=(r'Names to store inside the genenerated page '
+                        help=(r'Names to store inside the generated pages '
                               r'Example: "Maarten Duijndam" "Iris Mulders"'),
                         nargs='+',
                         type=str
@@ -129,7 +129,6 @@ ARGPARSER.add_argument("-y",
                        default=datetime.date.today().year + 1,
                        help='The year to use to generate the calendar'
                        )
-
 
 if __name__ == '__main__':
     arguments   = ARGPARSER.parse_args()
