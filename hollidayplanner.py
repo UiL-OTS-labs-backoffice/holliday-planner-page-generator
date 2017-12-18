@@ -4,18 +4,24 @@ import argparse
 
 class holliday_planner(object):
 
+    COLORS = ['green', 'red', 'purple', 'magenta', 'orange', 'blue', 'cyan',
+              'violet', 'yellow', 'wheat']
+    DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday",
+            "Sunday"]
+    MONTHS = ["January", "February", "March", "April", "May", "June",
+              "July" , "August", "September", "October",
+              "November", "December"]
+
     def __init__(self, year, names):
         '''
         Generate a calendar for this year
         '''
         self.away = dict()
-        self.COLORS = ['green', 'red', 'purple', 'magenta', 'orange', 'blue', 'cyan', 'violet', 'yellow', 'wheat']
-        self.DAYS = ["Monday", "Tuesday", "Wednesday" , "Thursday", "Friday", "Saterday", "Sunday"]
-        self.MONTHS = ["January", "February", "March", "April", "May", "June", "July" , "August", "September", "Oktober", "November", "December"]
         self.header = [
             '[[Category:HolidayRoster]]', 
             '', 
-            'You can find how to correctly edit this page on in [[:Category:HolidayRoster | the category page]].', 
+            ( 'You can find how to correctly edit this page on in'
+              '[[:Category:HolidayRoster | the category page]].'), 
             '==Holidays=='
         ]
         self.namesHeader = [
@@ -37,7 +43,9 @@ class holliday_planner(object):
         self.getColorNames()
 
     def getColorNames(self):
-        self.colorNames = dict((self.names[i], self.COLORS[i]) for i in range(len(self.names)))
+        self.colorNames = dict(
+            (self.names[i], self.COLORS[i]) for i in range(len(self.names))
+            )
 
     def addName(self, name, date):
         '''
