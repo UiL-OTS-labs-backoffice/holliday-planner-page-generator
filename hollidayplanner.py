@@ -1,6 +1,6 @@
-#!/usr/bin/env python 
-# Use python 2.x
+#!/usr/bin/env python3
 import re, datetime, sys
+import argparse
 
 class holliday_planner(object):
 
@@ -101,22 +101,44 @@ class holliday_planner(object):
 			stream.write('|<font color=' + self.colorNames[k] + '>' + k + '</font> || ' + self.colorNames[k] + '|| <syntaxhighlight lang="html4strict"><br /><font color=' + self.colorNames[k] + '>' + k + '</font></syntaxhighlight>\n|-\n')
 		stream.write("|}")
 
+
+DESCRIPTION = ('holidayplanner is a utility to write the html neccessary to '
+               'update the holiday schedule for one year. The user is expected '
+               'to provide the names necessary to put in the page. It is also '
+               'recommended to use the --year or -y option to generate the'
+               'list for the intended year, otherwise the current year + 1'
+               'is chosen.')
+ARGPARSER = argparse.ArgumentParser(description=DESCRIPTION)
+ARGPARSER.add_argument("names",
+                        help=(r'Names to store inside the genenerated page '
+                              r'Example: "Maarten Duijndam" "Iris Mulders"'),
+                        nargs='+',
+                        type=str
+                        )
+ARGPARSER.add_argument("-y",
+                       "--year",
+                       type=int,
+                       default=datetime.date.today().year + 1,
+                       help='The year to use to generate the calendar'
+                       )
+
+
 if __name__ == '__main__':
-	assert len(sys.argv) > 1
-	year = int(sys.argv[1])
-	names = sys.argv[2:] if len(sys.argv) > 2 else ["Maarten Duijndam", "Chris van Run", "Iris Mulders", "Maartje de Klerk", "Ty Mees"]
-	
-	cal = holliday_planner(year, names)
+    arguments   = ARGPARSER.parse_args()
+    year        = arguments.year
+    names       = arguments.names
 
-	# Example for how to add predefined hollidays
-	# cal.addNameLong("Maarten Duijndam", datetime.date(year, 7, 10), datetime.date(year, 8, 19))
-	# cal.addNameLong("Iris Mulders", datetime.date(year, 7, 14), datetime.date(year, 8, 6))
-	# cal.addNameLong("Iris Mulders", datetime.date(year, 8, 25), datetime.date(year,8,31))
-	# cal.addName("Jan de Mooij", datetime.date(year, 6, 16))
-	# cal.addNameLong("Jan de Mooij", datetime.date(year, 7, 27), datetime.date(year, 8, 4))
+    cal = holliday_planner(year, names)
 
-	cal.createPlanner()
-	with open('rawcalendar.txt', 'w') as stream: 
-		cal.writeCalendarTable(stream)
-	with open('names.txt', 'w') as stream:
-		cal.writeNamesTable(stream)
+    # Example for how to add predefined hollidays
+    # cal.addNameLong("Maarten Duijndam", datetime.date(year, 7, 10), datetime.date(year, 8, 19))
+    # cal.addNameLong("Iris Mulders", datetime.date(year, 7, 14), datetime.date(year, 8, 6))
+    # cal.addNameLong("Iris Mulders", datetime.date(year, 8, 25), datetime.date(year,8,31))
+    # cal.addName("Jan de Mooij", datetime.date(year, 6, 16))
+    # cal.addNameLong("Jan de Mooij", datetime.date(year, 7, 27), datetime.date(year, 8, 4))
+
+    cal.createPlanner()
+    with open('rawcalendar.txt', 'w') as stream: 
+        cal.writeCalendarTable(stream)
+    with open('names.txt', 'w') as stream:
+        cal.writeNamesTable(stream)
