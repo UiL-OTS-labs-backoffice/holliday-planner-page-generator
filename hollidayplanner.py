@@ -129,11 +129,18 @@ ARGPARSER.add_argument("-y",
                        default=datetime.date.today().year + 1,
                        help='The year to use to generate the calendar'
                        )
+ARGPARSER.add_argument("-s",
+                       "--silent",
+                       action='store_true',
+                       help='Reduce the output of the holiday planner.'
+                       )
 
 if __name__ == '__main__':
     arguments   = ARGPARSER.parse_args()
     year        = arguments.year
     names       = arguments.names
+    calendarfn  = 'rawcalendar.txt' 
+    namesfn     = 'names.txt'
 
     cal = holliday_planner(year, names)
 
@@ -145,7 +152,11 @@ if __name__ == '__main__':
     # cal.addNameLong("Jan de Mooij", datetime.date(year, 7, 27), datetime.date(year, 8, 4))
 
     cal.createPlanner()
-    with open('rawcalendar.txt', 'w') as stream: 
+    with open(calendarfn, 'w') as stream: 
         cal.writeCalendarTable(stream)
-    with open('names.txt', 'w') as stream:
+        if not arguments.silent:
+            print("Written the holiday wikitable to {}".format(calendarfn))
+    with open(namesfn, 'w') as stream:
         cal.writeNamesTable(stream)
+        if not arguments.silent:
+            print("Written the names legend to {}".format(namesfn))
